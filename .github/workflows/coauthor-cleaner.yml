@@ -1,0 +1,25 @@
+name: Coauthor Cleaner
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - uses: ./action.yml
+        with:
+          mode: ${{ vars.COAUTHOR_CLEANER_MODE || 'block' }}
