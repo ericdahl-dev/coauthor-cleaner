@@ -16,20 +16,35 @@ var (
 	flagStaged       bool
 	flagCommit       string
 	flagYes          bool
+	flagForce        bool
 	flagStrict       bool
 	flagAggressive   bool
 	flagJSON         bool
 	flagFailFindings bool
 	flagBase         string
 	flagHead         string
+	flagFile         string
+	flagDir          string
 )
 
 func main() {
 	root := &cobra.Command{
 		Use:   "coauthor-cleaner",
 		Short: "Remove unwanted AI attribution from Git commits and staged changes",
+		Long: `Coauthor Cleaner finds and removes AI attribution markers in git repos.
+
+Default (just run with no subcommand):
+  coauthor-cleaner fix        # auto-clean safe findings
+
+Full pipeline with push:
+  coauthor-cleaner fix --push
+  coauthor-cleaner fix --force --force-push   # if HEAD was already on GitHub`,
+		RunE: runFix,
 	}
 
+	root.AddCommand(fixCmd())
+	root.AddCommand(statusCmd())
+	root.AddCommand(doctorCmd())
 	root.AddCommand(scanCmd())
 	root.AddCommand(cleanCmd())
 	root.AddCommand(reviewCmd())
@@ -56,31 +71,63 @@ func scanCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "scan",
 		Short: "Scan for AI attribution markers without making changes",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			g, err := gitRunner()
-			if err != nil {
-				return err
-			}
-			opts := scanOptsFromGit(g)
-			if !opts.Staged && opts.Commit == "" && opts.Base == "" {
-				opts.Staged = true
-				opts.Commit = "HEAD"
-			}
-			result, err := scan.Run(g, opts)
-			if err != nil {
-				return err
-			}
-			if err := printScanResult(result.Findings); err != nil {
-				return err
-			}
-			if flagFailFindings && len(result.Findings) > 0 {
-				return fmt.Errorf("found %d AI attribution marker(s)", len(result.Findings))
-			}
-			return nil
-		},
+		Long: `Scan git state (default), or arbitrary paths without a git repo:
+
+  coauthor-cleaner scan --staged --commit HEAD
+  coauthor-cleaner scan --file README.md
+  coauthor-cleaner scan --dir ./src`,
+		RunE: runScan,
 	}
 	addScanFlags(cmd)
+	cmd.Flags().StringVar(&flagFile, "file", "", "scan a single file (no git repo required)")
+	cmd.Flags().StringVar(&flagDir, "dir", "", "scan a directory recursively (no git repo required)")
 	return cmd
+}
+
+func runScan(cmd *cobra.Command, args []string) error {
+	if flagFile != "" || flagDir != "" {
+		path := flagFile
+		if flagDir != "" {
+			path = flagDir
+		}
+		g := git.Runner{}
+		cfg := loadConfig(g)
+		findings, err := scan.ScanPath(path, cfg, flagStrict, flagAggressive)
+		if err != nil {
+			return err
+		}
+		if err := printScanResult(findings); err != nil {
+			return err
+		}
+		if flagFailFindings && len(findings) > 0 {
+			return fmt.Errorf("found %d AI attribution marker(s)", len(findings))
+		}
+		return nil
+	}
+
+	g, err := gitRunner()
+	if err != nil {
+		return err
+	}
+	opts := scanOptsFromGit(g)
+	if !opts.Staged && opts.Commit == "" && opts.Base == "" {
+		opts.Staged = true
+		opts.Commit = "HEAD"
+	}
+	result, err := scan.Run(g, opts)
+	if err != nil {
+		return err
+	}
+	if err := printScanResult(result.Findings); err != nil {
+		return err
+	}
+	if len(result.Findings) > 0 {
+		fmt.Println("Tip: run coauthor-cleaner review to fix, or coauthor-cleaner status for full guidance.")
+	}
+	if flagFailFindings && len(result.Findings) > 0 {
+		return fmt.Errorf("found %d AI attribution marker(s)", len(result.Findings))
+	}
+	return nil
 }
 
 func cleanCmd() *cobra.Command {
@@ -109,7 +156,7 @@ func cleanCmd() *cobra.Command {
 				fmt.Print(scan.FormatText(result.Findings))
 				return nil
 			}
-			cleanResult, err := clean.Apply(g, clean.Options{Findings: result.Findings})
+			cleanResult, err := clean.Apply(g, clean.Options{Findings: result.Findings, ForceAmend: flagForce})
 			if err != nil {
 				return err
 			}
@@ -119,6 +166,7 @@ func cleanCmd() *cobra.Command {
 	}
 	addScanFlags(cmd)
 	cmd.Flags().BoolVar(&flagYes, "yes", false, "apply cleanups without confirmation")
+	cmd.Flags().BoolVar(&flagForce, "force", false, "allow amending a commit already pushed to remote")
 	return cmd
 }
 

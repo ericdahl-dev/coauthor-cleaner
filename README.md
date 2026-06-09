@@ -19,25 +19,27 @@ CGO_ENABLED=0 go build -o coauthor-cleaner ./cmd/coauthor-cleaner
 ## Quick start
 
 ```bash
-# Scan staged changes and HEAD commit
-coauthor-cleaner scan
+coauthor-cleaner              # same as: coauthor-cleaner fix
+coauthor-cleaner fix --push   # clean + push when safe
+```
 
-# Interactive review TUI
-coauthor-cleaner review
+Already pushed to GitHub? `coauthor-cleaner fix --force --force-push`
 
-# Install local git hooks (warn mode by default)
-coauthor-cleaner hook install
-
-# Create repo config
+```bash
 coauthor-cleaner config init
+coauthor-cleaner hook install
+# set behavior.hook_mode: clean  → auto-fix on git commit
 ```
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `scan` | Report attribution markers (non-destructive) |
-| `clean` | Remove markers (`--yes` to apply) |
+| `fix` | **Default** — auto-clean safe findings (`--push`, `--force`, `--check`) |
+| `status` | Repo check + findings + next steps |
+| `doctor` | Verify hooks, config, gh, git repo |
+| `scan` | Report markers (`--file` / `--dir` work outside git) |
+| `clean` | Remove markers (`--yes`; `--force` if commit was pushed) |
 | `review` | Interactive Bubble Tea TUI |
 | `ci` | PR range scan for GitHub Actions |
 | `pr scan` / `pr clean` | Scan/clean current PR via `gh` |

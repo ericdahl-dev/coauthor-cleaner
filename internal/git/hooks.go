@@ -66,3 +66,24 @@ func mergeHook(path, script string) error {
 func containsMarker(s string) bool {
 	return strings.Contains(s, hookMarker)
 }
+
+func (r Runner) HooksInstalled() bool {
+	gitDir, err := r.GitDir()
+	if err != nil {
+		return false
+	}
+	root, err := r.RepoRoot()
+	if err != nil {
+		return false
+	}
+	if !filepath.IsAbs(gitDir) {
+		gitDir = filepath.Join(root, gitDir)
+	}
+	for _, name := range hookTypes {
+		data, err := os.ReadFile(filepath.Join(gitDir, "hooks", name))
+		if err != nil || !containsMarker(string(data)) {
+			return false
+		}
+	}
+	return true
+}
