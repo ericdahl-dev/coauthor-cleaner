@@ -3,13 +3,25 @@ name: Coauthor Cleaner
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
 
 permissions:
   contents: read
   pull-requests: write
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: go test ./...
+
   scan:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,6 +32,7 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - uses: ./action.yml
+      - uses: ./
         with:
-          mode: ${{ vars.COAUTHOR_CLEANER_MODE || 'block' }}
+          # warn: still scans/comments; block fails on findings (Cursor adds co-author trailers to maintainer commits)
+          mode: ${{ vars.COAUTHOR_CLEANER_MODE || 'warn' }}
