@@ -49,9 +49,10 @@ type Model struct {
 	git      git.Runner
 	findings []detect.Finding
 	list     list.Model
-	screen   screen
-	summary  string
-	err      error
+	screen      screen
+	summary     string
+	warnForce   string
+	err         error
 	width    int
 	height   int
 }
@@ -124,6 +125,7 @@ func (m Model) updateList(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		if m.selectedCount() == 0 {
 			return m, nil
 		}
+		m.warnForce = m.forcePushWarning()
 		m.screen = screenConfirm
 	case "?":
 		// help shown in view
@@ -138,7 +140,7 @@ func (m Model) updateConfirm(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "b":
 		m.screen = screenList
 	case "c":
-		result, err := clean.Apply(m.git, clean.Options{Findings: m.findings})
+		result, err := clean.Apply(m.git, clean.Options{Findings: m.findings, ForceAmend: true})
 		if err != nil {
 			m.err = err
 			return m, tea.Quit
@@ -185,7 +187,8 @@ func (m Model) View() string {
 func (m Model) viewList() string {
 	if len(m.findings) == 0 {
 		return titleStyle.Render("Coauthor Cleaner") + "\n\n" +
-			lipgloss.NewStyle().Foreground(lipgloss.Color("240")).Render("No AI attribution markers found.") + "\n"
+			lipgloss.NewStyle().Foreground(lipgloss.Color("240")).Render("No AI attribution markers found.") + "\n\n" +
+			helpStyle.Render("Run coauthor-cleaner status anytime for a full repo check.") + "\n"
 	}
 
 	help := helpStyle.Render("[space] toggle  [a] accept all  [c] clean  [q] quit  [?] help")
@@ -193,9 +196,27 @@ func (m Model) viewList() string {
 	return titleStyle.Render("Coauthor Cleaner") + "\n\n" + header + m.list.View() + "\n" + help
 }
 
+func (m Model) forcePushWarning() string {
+	for _, f := range m.findings {
+		if !f.Selected {
+			continue
+		}
+		if f.Source == detect.SourceCommitMessage || f.Source == detect.SourceCommitTrailer {
+			st, err := m.git.RepoState()
+			if err == nil && st.AmendingRewritesPushedCommit() {
+				return "⚠ HEAD is already on the remote. Cleaning will require:\n   git push --force-with-lease\n"
+			}
+		}
+	}
+	return ""
+}
+
 func (m Model) viewConfirm() string {
 	var b strings.Builder
 	b.WriteString(titleStyle.Render("Apply cleanups?") + "\n\n")
+	if m.warnForce != "" {
+		b.WriteString(warnStyle.Render(m.warnForce) + "\n")
+	}
 	for _, f := range m.findings {
 		if !f.Selected {
 			continue
@@ -219,6 +240,7 @@ func (m Model) viewSummary() string {
 var (
 	titleStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("205"))
 	helpStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
+	warnStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("214"))
 	errorStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("196"))
 )
 

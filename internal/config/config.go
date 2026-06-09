@@ -71,7 +71,7 @@ targets:
 
 behavior:
   default_action: review
-  hook_mode: warn
+  hook_mode: warn   # warn | block | clean (clean auto-fixes safely)
   preserve_human_coauthors: true
 
 allowed_trailers:

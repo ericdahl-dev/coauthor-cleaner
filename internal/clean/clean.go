@@ -6,14 +6,17 @@ import (
 
 	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
 	"github.com/Skeyelab/coauthor-cleaner/internal/git"
+	"github.com/Skeyelab/coauthor-cleaner/internal/guide"
 )
 
 type Options struct {
-	Findings []detect.Finding
+	Findings   []detect.Finding
+	ForceAmend bool
 }
 
 type Result struct {
 	Applied int
+	Actions guide.CleanActions
 	Summary string
 }
 
@@ -24,8 +27,19 @@ func Apply(g git.Runner, opts Options) (Result, error) {
 	}
 
 	applied := 0
+	actions := guide.CleanActions{}
 	byFile := groupByFile(selected)
 	byCommit := groupByCommit(selected)
+
+	if len(byCommit) > 0 {
+		st, err := g.RepoState()
+		if err != nil {
+			return Result{}, err
+		}
+		if st.AmendingRewritesPushedCommit() && !opts.ForceAmend {
+			return Result{}, fmt.Errorf("HEAD commit is already on %s — amending rewrites published history\n\nUse --force if you intend to run: git push --force-with-lease\nOr run: coauthor-cleaner status", st.Upstream)
+		}
+	}
 
 	for path, fileFindings := range byFile {
 		files, err := g.StagedFileContents()
@@ -44,6 +58,7 @@ func Apply(g git.Runner, opts Options) (Result, error) {
 			return Result{}, fmt.Errorf("stage %s: %w", path, err)
 		}
 		applied += countSelected(fileFindings)
+		actions.StagedFiles = true
 	}
 
 	for ref, commitFindings := range byCommit {
@@ -59,10 +74,13 @@ func Apply(g git.Runner, opts Options) (Result, error) {
 			return Result{}, fmt.Errorf("amend commit: %w", err)
 		}
 		applied += countSelected(commitFindings)
+		actions.AmendedCommit = true
 	}
 
+	st, _ := g.RepoState()
 	summary := formatSummary(applied, selected)
-	return Result{Applied: applied, Summary: summary}, nil
+	summary += "\n" + guide.NextSteps(st, actions, 0)
+	return Result{Applied: applied, Actions: actions, Summary: summary}, nil
 }
 
 func filterSelected(findings []detect.Finding) []detect.Finding {

@@ -6,6 +6,7 @@ import (
 
 	"github.com/Skeyelab/coauthor-cleaner/internal/clean"
 	"github.com/Skeyelab/coauthor-cleaner/internal/config"
+	"github.com/Skeyelab/coauthor-cleaner/internal/fix"
 	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
 	"github.com/Skeyelab/coauthor-cleaner/internal/git"
 	"github.com/Skeyelab/coauthor-cleaner/internal/scan"
@@ -77,7 +78,7 @@ func runPreCommitHook(g git.Runner, cfg config.Config, mode string) error {
 	if err != nil {
 		return err
 	}
-	return handleHookFindings(g, mode, result.Findings)
+	return handleHookFindings(g, mode, "", result.Findings, true)
 }
 
 func runCommitMsgHook(cfg config.Config, mode, msgFile string) error {
@@ -91,28 +92,52 @@ func runCommitMsgHook(cfg config.Config, mode, msgFile string) error {
 	rules := detect.SelectRules(cfg, false, false)
 	opts := detect.ScanOpts{AllowedTrailers: cfg.AllowedTrailers}
 	findings := detect.ScanLines(string(data), detect.SourceCommitMessage, "", rules, opts)
-	return handleHookFindings(git.Runner{}, mode, findings)
+	return handleHookFindings(git.Runner{}, mode, msgFile, findings, false)
 }
 
-func handleHookFindings(g git.Runner, mode string, findings []detect.Finding) error {
+func handleHookFindings(g git.Runner, mode, msgFile string, findings []detect.Finding, stagedOnly bool) error {
 	if len(findings) == 0 {
 		return nil
 	}
-	fmt.Fprint(os.Stderr, scan.FormatText(findings))
-	fmt.Fprintln(os.Stderr)
-	fmt.Fprintln(os.Stderr, "Run: coauthor-cleaner review")
-	fmt.Fprintln(os.Stderr, "Or bypass with: git commit --no-verify")
 
 	switch mode {
-	case "block":
-		return fmt.Errorf("coauthor-cleaner: %d attribution marker(s) found", len(findings))
 	case "clean":
-		if g.InRepo() {
-			_, err := clean.Apply(g, clean.Options{Findings: findings})
-			return err
+		if msgFile != "" {
+			for i := range findings {
+				findings[i].Selected = true
+			}
+			if err := fix.CleanCommitMsgFile(msgFile, findings); err != nil {
+				return err
+			}
+			fmt.Fprintln(os.Stderr, "coauthor-cleaner: auto-cleaned commit message")
+			return nil
+		}
+		if stagedOnly && g.InRepo() {
+			var staged []detect.Finding
+			for _, f := range findings {
+				if f.Source == detect.SourceStagedDiff {
+					f.Selected = true
+					staged = append(staged, f)
+				}
+			}
+			if len(staged) > 0 {
+				_, err := clean.Apply(g, clean.Options{Findings: staged})
+				if err == nil {
+					fmt.Fprintln(os.Stderr, "coauthor-cleaner: auto-cleaned staged files")
+				}
+				return err
+			}
 		}
 		return nil
-	default:
-		return nil
 	}
+
+	fmt.Fprint(os.Stderr, scan.FormatText(findings))
+	fmt.Fprintln(os.Stderr)
+	fmt.Fprintln(os.Stderr, "Run: coauthor-cleaner fix")
+	fmt.Fprintln(os.Stderr, "Or bypass with: git commit --no-verify")
+
+	if mode == "block" {
+		return fmt.Errorf("coauthor-cleaner: %d attribution marker(s) found", len(findings))
+	}
+	return nil
 }
