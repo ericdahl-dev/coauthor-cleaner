@@ -3,8 +3,8 @@ package fix
 import (
 	"testing"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
-	"github.com/Skeyelab/coauthor-cleaner/internal/git"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/git"
 )
 
 func TestPartition_SkipsPushedCommit(t *testing.T) {

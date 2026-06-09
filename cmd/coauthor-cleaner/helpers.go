@@ -4,8 +4,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/config"
-	"github.com/Skeyelab/coauthor-cleaner/internal/git"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/config"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/git"
 )
 
 func loadConfig(g git.Runner) config.Config {

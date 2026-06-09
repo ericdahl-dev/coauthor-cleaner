@@ -3,7 +3,7 @@ package scan
 import (
 	"encoding/json"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
 )
 
 type JSONFinding struct {

@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/config"
-	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/config"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
 )
 
 var skipDirs = map[string]bool{

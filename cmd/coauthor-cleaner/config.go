@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/config"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/config"
 	"github.com/spf13/cobra"
 )
 

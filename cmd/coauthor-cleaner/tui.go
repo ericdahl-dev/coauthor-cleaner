@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Skeyelab/coauthor-cleaner/internal/tui"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/tui"
 	"github.com/spf13/cobra"
 )
 

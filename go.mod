@@ -1,4 +1,4 @@
-module github.com/Skeyelab/coauthor-cleaner
+module github.com/ericdahl-dev/coauthor-cleaner
 
 go 1.22
 

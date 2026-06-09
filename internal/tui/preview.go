@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
 )
 
 func PreviewDiff(f detect.Finding) string {

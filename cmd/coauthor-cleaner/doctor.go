@@ -5,10 +5,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/config"
-	"github.com/Skeyelab/coauthor-cleaner/internal/github"
-	"github.com/Skeyelab/coauthor-cleaner/internal/git"
-	"github.com/Skeyelab/coauthor-cleaner/internal/guide"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/config"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/github"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/git"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/guide"
 	"github.com/spf13/cobra"
 )
 

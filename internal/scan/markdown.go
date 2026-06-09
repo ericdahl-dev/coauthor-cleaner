@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
 )
 
 // FormatMarkdownComment renders findings as a GitHub PR comment.
