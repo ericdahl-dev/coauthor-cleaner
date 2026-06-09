@@ -133,7 +133,7 @@ func handleHookFindings(g git.Runner, mode, msgFile string, findings []detect.Fi
 
 	fmt.Fprint(os.Stderr, scan.FormatText(findings))
 	fmt.Fprintln(os.Stderr)
-	fmt.Fprintln(os.Stderr, "Run: coauthor-cleaner fix")
+	fmt.Fprintln(os.Stderr, "Run: coauthor-cleaner")
 	fmt.Fprintln(os.Stderr, "Or bypass with: git commit --no-verify")
 
 	if mode == "block" {

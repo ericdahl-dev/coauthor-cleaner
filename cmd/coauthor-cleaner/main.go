@@ -8,7 +8,6 @@ import (
 	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
 	"github.com/Skeyelab/coauthor-cleaner/internal/git"
 	"github.com/Skeyelab/coauthor-cleaner/internal/scan"
-	"github.com/Skeyelab/coauthor-cleaner/internal/tui"
 	"github.com/spf13/cobra"
 )
 
@@ -33,13 +32,13 @@ func main() {
 		Short: "Remove unwanted AI attribution from Git commits and staged changes",
 		Long: `Coauthor Cleaner finds and removes AI attribution markers in git repos.
 
-Default (just run with no subcommand):
-  coauthor-cleaner fix        # auto-clean safe findings
+Default — interactive TUI (scan, review, clean, push):
+  coauthor-cleaner
 
-Full pipeline with push:
+Non-interactive automation:
   coauthor-cleaner fix --push
-  coauthor-cleaner fix --force --force-push   # if HEAD was already on GitHub`,
-		RunE: runFix,
+  coauthor-cleaner fix --force --force-push`,
+		RunE: runTUI,
 	}
 
 	root.AddCommand(fixCmd())
@@ -122,7 +121,7 @@ func runScan(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	if len(result.Findings) > 0 {
-		fmt.Println("Tip: run coauthor-cleaner review to fix, or coauthor-cleaner status for full guidance.")
+		fmt.Println("Tip: run coauthor-cleaner to fix in the TUI, or coauthor-cleaner status for guidance.")
 	}
 	if flagFailFindings && len(result.Findings) > 0 {
 		return fmt.Errorf("found %d AI attribution marker(s)", len(result.Findings))
@@ -172,22 +171,10 @@ func cleanCmd() *cobra.Command {
 
 func reviewCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "review",
-		Short: "Review and clean AI attribution markers interactively",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			g, err := gitRunner()
-			if err != nil {
-				return err
-			}
-			opts := scanOptsFromGit(g)
-			opts.Staged = true
-			opts.Commit = "HEAD"
-			result, err := scan.Run(g, opts)
-			if err != nil {
-				return err
-			}
-			return tui.Run(g, result.Findings)
-		},
+		Use:     "review",
+		Aliases: []string{"tui"},
+		Short:   "Interactive TUI (same as running coauthor-cleaner with no args)",
+		RunE:    runTUI,
 	}
 }
 

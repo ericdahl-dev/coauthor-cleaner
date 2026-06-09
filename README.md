@@ -19,11 +19,12 @@ CGO_ENABLED=0 go build -o coauthor-cleaner ./cmd/coauthor-cleaner
 ## Quick start
 
 ```bash
-coauthor-cleaner              # same as: coauthor-cleaner fix
-coauthor-cleaner fix --push   # clean + push when safe
+coauthor-cleaner    # opens the TUI — scan, review, clean, and push
 ```
 
-Already pushed to GitHub? `coauthor-cleaner fix --force --force-push`
+Lazygit-style split-panel TUI: findings list (left), live preview (right), status bar, contextual footer. Full workflow: toggle, clean, push (`--force-with-lease` when needed). Press `?` for help.
+
+Non-interactive: `coauthor-cleaner fix --push`
 
 ```bash
 coauthor-cleaner config init
@@ -35,12 +36,12 @@ coauthor-cleaner hook install
 
 | Command | Description |
 |---------|-------------|
-| `fix` | **Default** — auto-clean safe findings (`--push`, `--force`, `--check`) |
+| *(default)* | **TUI** — scan, preview, clean, push (`review` / `tui` alias) |
+| `fix` | Non-interactive auto-clean (`--push`, `--force`, `--check`) |
 | `status` | Repo check + findings + next steps |
 | `doctor` | Verify hooks, config, gh, git repo |
 | `scan` | Report markers (`--file` / `--dir` work outside git) |
 | `clean` | Remove markers (`--yes`; `--force` if commit was pushed) |
-| `review` | Interactive Bubble Tea TUI |
 | `ci` | PR range scan for GitHub Actions |
 | `pr scan` / `pr clean` | Scan/clean current PR via `gh` |
 | `hook install` | Install pre-commit + commit-msg hooks |

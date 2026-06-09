@@ -55,9 +55,8 @@ func NextSteps(st git.RepoState, actions CleanActions, findingCount int) string 
 func formatFindingSteps(count int) string {
 	var b strings.Builder
 	b.WriteString(fmt.Sprintf("Found %d attribution marker(s). Recommended:\n\n", count))
-	b.WriteString("  1. coauthor-cleaner fix          # auto-clean safe findings\n")
-	b.WriteString("  2. coauthor-cleaner review       # interactive\n")
-	b.WriteString("  3. coauthor-cleaner fix --force --force-push  # if already on GitHub\n\n")
+	b.WriteString("  1. coauthor-cleaner              # interactive TUI (recommended)\n")
+	b.WriteString("  2. coauthor-cleaner fix --push   # non-interactive\n\n")
 	b.WriteString("Run coauthor-cleaner status for a full repo check.\n")
 	return b.String()
 }
@@ -132,9 +131,8 @@ func DoctorReport(inRepo, ghOK, hooksOK, configOK bool, configPath string) strin
 	check(ghOK, "GitHub CLI (gh) for pr commands", "brew install gh && gh auth login")
 
 	b.WriteString("\nRecommended workflow:\n")
-	b.WriteString("  coauthor-cleaner fix       → auto-clean (default)\n")
-	b.WriteString("  coauthor-cleaner fix --push\n")
-	b.WriteString("  hook_mode: clean in .coauthor-cleaner.yml → auto-fix on commit\n")
+	b.WriteString("  coauthor-cleaner           → interactive TUI (default)\n")
+	b.WriteString("  hook_mode: clean           → auto-fix on git commit\n")
 	return b.String()
 }
 
