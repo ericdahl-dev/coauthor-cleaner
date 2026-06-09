@@ -1,0 +1,1 @@
+/Users/edahl/conductor/repos/coauthor-cleaner/.claude/skills/gstack/open-gstack-browser/SKILL.md
