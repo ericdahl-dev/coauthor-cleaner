@@ -7,8 +7,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/config"
-	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/config"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
 )
 
 type PR struct {

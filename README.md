@@ -7,7 +7,7 @@ Remove unwanted AI coauthor trailers, generated-by comments, and attribution boi
 ## Install
 
 ```bash
-go install github.com/Skeyelab/coauthor-cleaner/cmd/coauthor-cleaner@latest
+go install github.com/ericdahl-dev/coauthor-cleaner/cmd/coauthor-cleaner@latest
 ```
 
 Or build from source:
@@ -75,7 +75,7 @@ Use the reusable action from this repo:
 - uses: actions/setup-go@v5
   with:
     go-version-file: go.mod
-- uses: Skeyelab/coauthor-cleaner/action.yml@v0.1.0
+- uses: ericdahl-dev/coauthor-cleaner/action.yml@v0.1.3
   with:
     mode: block   # or warn
 ```

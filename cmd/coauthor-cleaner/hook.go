@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/clean"
-	"github.com/Skeyelab/coauthor-cleaner/internal/config"
-	"github.com/Skeyelab/coauthor-cleaner/internal/fix"
-	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
-	"github.com/Skeyelab/coauthor-cleaner/internal/git"
-	"github.com/Skeyelab/coauthor-cleaner/internal/scan"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/clean"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/config"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/fix"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/git"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/scan"
 	"github.com/spf13/cobra"
 )
 

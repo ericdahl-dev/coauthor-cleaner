@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
 )
 
 func TestFormatText(t *testing.T) {

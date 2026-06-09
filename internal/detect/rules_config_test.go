@@ -3,7 +3,7 @@ package detect
 import (
 	"testing"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/config"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/config"
 )
 
 func TestSelectRules_RespectsProviders(t *testing.T) {

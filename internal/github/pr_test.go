@@ -3,7 +3,7 @@ package github
 import (
 	"testing"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/config"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/config"
 )
 
 func TestScanPR_Body(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/testutil"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/testutil"
 )
 
 func TestStageFile_AndAmend(t *testing.T) {

@@ -1,6 +1,6 @@
 package detect
 
-import "github.com/Skeyelab/coauthor-cleaner/internal/config"
+import "github.com/ericdahl-dev/coauthor-cleaner/internal/config"
 
 func SelectRules(cfg config.Config, strict, aggressive bool) []Rule {
 	var rules []Rule

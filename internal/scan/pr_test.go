@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/git"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/git"
 )
 
 func TestRun_PRRange(t *testing.T) {

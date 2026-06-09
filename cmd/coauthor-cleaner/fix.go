@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/fix"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/fix"
 	"github.com/spf13/cobra"
 )
 

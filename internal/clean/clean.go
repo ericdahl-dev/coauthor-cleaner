@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
-	"github.com/Skeyelab/coauthor-cleaner/internal/git"
-	"github.com/Skeyelab/coauthor-cleaner/internal/guide"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/git"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/guide"
 )
 
 type Options struct {

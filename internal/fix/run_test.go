@@ -6,11 +6,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Skeyelab/coauthor-cleaner/internal/config"
-	"github.com/Skeyelab/coauthor-cleaner/internal/detect"
-	"github.com/Skeyelab/coauthor-cleaner/internal/git"
-	"github.com/Skeyelab/coauthor-cleaner/internal/scan"
-	"github.com/Skeyelab/coauthor-cleaner/internal/testutil"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/config"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/git"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/scan"
+	"github.com/ericdahl-dev/coauthor-cleaner/internal/testutil"
 )
 
 func initCommit(t *testing.T, dir string) {
