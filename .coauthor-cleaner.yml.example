@@ -1,0 +1,24 @@
+# Copy to .coauthor-cleaner.yml or run: coauthor-cleaner config init
+
+providers:
+  claude: true
+  chatgpt: true
+  copilot: true
+  cursor: true
+  generic_ai: true
+
+targets:
+  staged_diff: true
+  commit_messages: true
+  pr_body: true
+  file_headers: true
+
+behavior:
+  default_action: review
+  hook_mode: warn   # warn | block | clean
+  preserve_human_coauthors: true
+
+allowed_trailers:
+  - "Signed-off-by:"
+  - "Reviewed-by:"
+  # - "Co-authored-by: Your Name"
