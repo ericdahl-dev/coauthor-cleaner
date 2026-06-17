@@ -6,6 +6,7 @@ import (
 
 	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
 	"github.com/ericdahl-dev/coauthor-cleaner/internal/git"
+	"github.com/charmbracelet/lipgloss"
 )
 
 func TestPreviewDiff(t *testing.T) {
@@ -42,5 +43,13 @@ func TestComputeLayout(t *testing.T) {
 	ly := computeLayout(100, 30)
 	if ly.leftWidth < 28 || ly.rightWidth < 24 {
 		t.Fatalf("%+v", ly)
+	}
+}
+
+func TestRenderSplitFitsTerminalWidth(t *testing.T) {
+	m := Model{layout: computeLayout(100, 30)}
+	out := m.renderSplit()
+	if got := lipgloss.Width(out); got > 100 {
+		t.Fatalf("rendered split width = %d, want <= 100\n%s", got, out)
 	}
 }

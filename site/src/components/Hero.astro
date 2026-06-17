@@ -1,0 +1,112 @@
+<section id="top" class="terminal-grid relative min-h-[100dvh] overflow-hidden px-4 pt-28 sm:px-6 lg:px-8">
+  <div class="mx-auto grid max-w-7xl items-center gap-12 pb-20 pt-8 lg:grid-cols-[0.88fr_1.12fr] lg:pb-28 lg:pt-20">
+    <div class="relative z-10">
+      <p class="mono mb-5 inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.06] px-3 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-white/70">
+        <span class="size-2 rounded-full bg-[var(--acid)]"></span>
+        Git history hygiene
+      </p>
+      <h1 class="text-balance max-w-4xl text-5xl font-black leading-[0.93] tracking-normal text-white sm:text-6xl lg:text-7xl">
+        Clean commits.
+        <span class="block text-[var(--acid)]">Quiet bots.</span>
+      </h1>
+      <p class="mt-7 max-w-2xl text-lg leading-8 text-white/70 sm:text-xl">
+        Coauthor Cleaner removes unwanted AI coauthor trailers, generated-by comments, and attribution boilerplate before they hit your branch, pull request, or release history.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a
+          href="#install"
+          class="inline-flex items-center justify-center rounded-full bg-[var(--paper)] px-6 py-3 text-sm font-bold text-[var(--ink)] transition hover:-translate-y-0.5 hover:bg-white"
+        >
+          Install the CLI
+        </a>
+        <a
+          href="#action"
+          class="inline-flex items-center justify-center rounded-full border border-white/16 px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-white/10"
+        >
+          Add the Action
+        </a>
+      </div>
+      <div class="mt-10 grid max-w-xl grid-cols-3 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10">
+        <div class="bg-[#101116]/95 p-4">
+          <div class="mono text-2xl font-semibold text-white">3</div>
+          <div class="mt-1 text-xs uppercase tracking-[0.14em] text-white/42">Modes</div>
+        </div>
+        <div class="bg-[#101116]/95 p-4">
+          <div class="mono text-2xl font-semibold text-white">PR</div>
+          <div class="mt-1 text-xs uppercase tracking-[0.14em] text-white/42">Native</div>
+        </div>
+        <div class="bg-[#101116]/95 p-4">
+          <div class="mono text-2xl font-semibold text-white">TUI</div>
+          <div class="mt-1 text-xs uppercase tracking-[0.14em] text-white/42">Review</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="float-slow relative z-10 min-w-0">
+      <div class="shell-shadow max-w-full min-w-0 overflow-hidden rounded-[2rem] border border-white/14 bg-[#0d0f14]">
+        <div class="flex items-center justify-between border-b border-white/10 bg-white/[0.04] px-5 py-4">
+          <div class="flex gap-2">
+            <span class="size-3 rounded-full bg-[#ff6b81]"></span>
+            <span class="size-3 rounded-full bg-[#ffd166]"></span>
+            <span class="size-3 rounded-full bg-[#4ade80]"></span>
+          </div>
+          <span class="mono text-xs text-white/42">coauthor-cleaner review</span>
+        </div>
+        <div class="grid min-h-[470px] lg:grid-cols-[0.86fr_1.14fr]">
+          <div class="min-w-0 border-b border-white/10 bg-[#11131a] p-4 lg:border-b-0 lg:border-r">
+            <div class="mono mb-3 text-xs uppercase tracking-[0.18em] text-white/38">Findings</div>
+            <div class="space-y-2">
+              <div class="rounded-xl border border-[var(--red)]/40 bg-[var(--red)]/10 p-3">
+                <div class="flex items-center justify-between gap-3">
+                  <span class="mono text-sm text-white">commit-msg</span>
+                  <span class="mono text-xs text-[var(--red)]">block</span>
+                </div>
+                <p class="mt-2 text-sm leading-5 text-white/66">Co-authored-by trailer detected</p>
+              </div>
+              <div class="rounded-xl border border-white/10 bg-white/[0.04] p-3">
+                <div class="flex items-center justify-between gap-3">
+                  <span class="mono text-sm text-white">README.md</span>
+                  <span class="mono text-xs text-[var(--acid)]">clean</span>
+                </div>
+                <p class="mt-2 text-sm leading-5 text-white/58">Generated-by marker removed</p>
+              </div>
+              <div class="rounded-xl border border-white/10 bg-white/[0.04] p-3">
+                <div class="flex items-center justify-between gap-3">
+                  <span class="mono text-sm text-white">PR #42</span>
+                  <span class="mono text-xs text-white/40">warn</span>
+                </div>
+                <p class="mt-2 text-sm leading-5 text-white/58">Comment preview ready</p>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-0 bg-[#0b0c11] p-5">
+            <div class="mono mb-4 text-xs uppercase tracking-[0.18em] text-white/38">Live preview</div>
+            <pre class="mono max-w-full overflow-x-auto rounded-2xl border border-white/10 bg-black/35 p-4 text-[12px] leading-6 text-white/78"><code><span class="text-white/35">commit 8f4a2c9</span>
+feat: tighten PR attribution scan
+
+Scan staged files and pull request ranges
+before generated markers leave the branch.
+
+<span class="bg-[var(--red)]/20 text-[var(--red)]">- Co-authored-by: AI Bot &lt;bot@example.com&gt;</span>
+<span class="bg-[var(--red)]/20 text-[var(--red)]">- Generated with ChatGPT</span>
+<span class="text-[var(--acid)]">+ protected by coauthor-cleaner</span></code></pre>
+            <div class="mt-5 grid gap-3 sm:grid-cols-3">
+              <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                <div class="mono text-lg text-[var(--acid)]">scan</div>
+                <p class="mt-2 text-xs leading-5 text-white/50">Detect markers across commits and files.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                <div class="mono text-lg text-[var(--acid)]">clean</div>
+                <p class="mt-2 text-xs leading-5 text-white/50">Remove boilerplate with review.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                <div class="mono text-lg text-[var(--acid)]">push</div>
+                <p class="mt-2 text-xs leading-5 text-white/50">Publish with lease-aware safety.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

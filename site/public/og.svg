@@ -1,0 +1,20 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#08090D"/>
+  <path d="M0 0H1200V630H0V0Z" fill="url(#grid)"/>
+  <circle cx="210" cy="96" r="310" fill="#9B7CFF" fill-opacity=".26"/>
+  <circle cx="1040" cy="166" r="250" fill="#D6FF5F" fill-opacity=".16"/>
+  <rect x="666" y="118" width="410" height="356" rx="32" fill="#11131A" stroke="#F7F5EF" stroke-opacity=".16"/>
+  <rect x="704" y="170" width="166" height="18" rx="9" fill="#FF6B81"/>
+  <rect x="704" y="218" width="292" height="16" rx="8" fill="#F7F5EF" fill-opacity=".36"/>
+  <rect x="704" y="260" width="236" height="16" rx="8" fill="#F7F5EF" fill-opacity=".22"/>
+  <rect x="704" y="322" width="320" height="56" rx="18" fill="#D6FF5F" fill-opacity=".16" stroke="#D6FF5F" stroke-opacity=".42"/>
+  <rect x="704" y="406" width="194" height="16" rx="8" fill="#D6FF5F"/>
+  <text x="104" y="250" fill="#F7F5EF" font-family="Arial, sans-serif" font-size="86" font-weight="900">Clean commits.</text>
+  <text x="104" y="346" fill="#D6FF5F" font-family="Arial, sans-serif" font-size="86" font-weight="900">Quiet bots.</text>
+  <text x="108" y="420" fill="#F7F5EF" fill-opacity=".68" font-family="Arial, sans-serif" font-size="28">Remove unwanted AI attribution from commits and PRs.</text>
+  <defs>
+    <pattern id="grid" width="46" height="46" patternUnits="userSpaceOnUse">
+      <path d="M46 0H0V46" stroke="#F7F5EF" stroke-opacity=".07"/>
+    </pattern>
+  </defs>
+</svg>
