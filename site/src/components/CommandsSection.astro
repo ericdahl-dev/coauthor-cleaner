@@ -1,0 +1,31 @@
+---
+const commands = [
+  ["review", "Open the TUI to scan, preview, clean, and push."],
+  ["fix", "Run non-interactive cleanup with check and push options."],
+  ["status", "Check repository state, findings, and next steps."],
+  ["ci", "Scan pull request ranges from GitHub Actions."],
+  ["hook install", "Install pre-commit and commit-msg protection."],
+  ["rules list", "Inspect active provider detection rules."],
+];
+---
+
+<section id="commands" class="paper-section px-4 py-24 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+      <div>
+        <p class="mono text-xs font-bold uppercase tracking-[0.18em] text-[var(--violet-strong)]">Commands</p>
+        <h2 class="mt-4 text-4xl font-black leading-[0.98] tracking-normal sm:text-5xl">
+          Built for the way engineers actually ship.
+        </h2>
+      </div>
+      <div class="grid gap-px overflow-hidden rounded-3xl border border-black/10 bg-black/10 sm:grid-cols-2">
+        {commands.map(([name, description]) => (
+          <div class="bg-white p-6">
+            <div class="mono text-sm font-bold text-[var(--violet-strong)]">{name}</div>
+            <p class="mt-3 text-sm leading-6 text-black/62">{description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

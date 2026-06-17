@@ -5,17 +5,23 @@ import (
 	"strings"
 
 	"github.com/ericdahl-dev/coauthor-cleaner/internal/detect"
+	"github.com/charmbracelet/lipgloss"
 )
 
 func PreviewDiff(f detect.Finding) string {
 	var b strings.Builder
-	b.WriteString("Before / after\n\n")
-	b.WriteString(fmt.Sprintf("  - %s\n", f.Match))
+	b.WriteString(subStyle.Render("Before / after") + "\n\n")
+
+	var diff strings.Builder
+	diff.WriteString(lipgloss.NewStyle().Foreground(colorError).Render(fmt.Sprintf("- %s", f.Match)) + "\n")
 	if f.Replacement != "" {
-		b.WriteString(fmt.Sprintf("  + %s\n", f.Replacement))
+		diff.WriteString(lipgloss.NewStyle().Foreground(colorOK).Render(fmt.Sprintf("+ %s", f.Replacement)) + "\n")
 	} else {
-		b.WriteString("  +\n")
+		diff.WriteString(lipgloss.NewStyle().Foreground(colorOK).Render("+ <removed>") + "\n")
 	}
-	b.WriteString(fmt.Sprintf("\nRule: %s (%s confidence)\n", f.RuleName, f.Confidence))
+	b.WriteString(codeBoxStyle.Render(diff.String()))
+	b.WriteString("\n\n")
+	b.WriteString(subStyle.Render("Rule") + " " + titleStyle.Render(f.RuleName) + "\n")
+	b.WriteString(subStyle.Render("Confidence") + " " + okStyle.Render(string(f.Confidence)) + "\n")
 	return b.String()
 }

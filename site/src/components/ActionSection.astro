@@ -1,0 +1,44 @@
+<section id="action" class="bg-[#08090d] px-4 py-24 text-white sm:px-6 lg:px-8">
+  <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+    <div>
+      <p class="mono text-xs font-bold uppercase tracking-[0.18em] text-[var(--acid)]">GitHub Action</p>
+      <h2 class="mt-4 max-w-xl text-4xl font-black leading-[0.98] tracking-normal sm:text-5xl">
+        Give every PR a quiet-history check.
+      </h2>
+      <p class="mt-5 max-w-xl text-lg leading-8 text-white/62">
+        Drop the reusable action into an existing workflow. Use block mode for protected branches or warn mode when you want PR comments without failing checks.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <span class="rounded-full border border-white/12 px-4 py-2 text-sm text-white/68">mode: block</span>
+        <span class="rounded-full border border-white/12 px-4 py-2 text-sm text-white/68">strict: true</span>
+        <span class="rounded-full border border-white/12 px-4 py-2 text-sm text-white/68">aggressive: false</span>
+      </div>
+    </div>
+    <div class="min-w-0 overflow-hidden rounded-3xl border border-white/12 bg-[#11131a] shell-shadow">
+      <div class="border-b border-white/10 px-5 py-4">
+        <span class="mono text-xs uppercase tracking-[0.16em] text-white/40">.github/workflows/protect.yml</span>
+      </div>
+      <pre class="mono max-w-full overflow-x-auto p-5 text-sm leading-7 text-white/78"><code>name: Protect from AI Attribution
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  protect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - uses: ericdahl-dev/coauthor-cleaner/action.yml@v0.1.3
+        with:
+          mode: block</code></pre>
+    </div>
+  </div>
+</section>

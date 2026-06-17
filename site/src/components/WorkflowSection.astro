@@ -1,0 +1,32 @@
+<section id="workflow" class="paper-section px-4 py-24 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <div class="flex flex-col justify-between gap-8 border-t border-black/12 pt-12 lg:flex-row lg:items-end">
+      <div>
+        <p class="mono text-xs font-bold uppercase tracking-[0.18em] text-[var(--violet-strong)]">Workflow</p>
+        <h2 class="mt-4 max-w-3xl text-4xl font-black leading-[0.98] tracking-normal sm:text-5xl">
+          Block the attribution trail at every handoff.
+        </h2>
+      </div>
+      <p class="max-w-md text-base leading-7 text-black/58">
+        The same rules power local hooks, the TUI, PR scans, and GitHub Actions, so behavior stays consistent across individual machines and CI.
+      </p>
+    </div>
+    <div class="mt-12 grid gap-4 lg:grid-cols-4">
+      <article class="rounded-3xl bg-[#11131a] p-6 text-white lg:col-span-2 lg:min-h-72">
+        <div class="mono text-xs uppercase tracking-[0.18em] text-[var(--acid)]">01 / scan</div>
+        <h3 class="mt-8 text-3xl font-black tracking-normal">Find generated markers before review.</h3>
+        <p class="mt-4 max-w-md leading-7 text-white/58">Scan commits, staged changes, files, directories, and pull request ranges with strict or aggressive matching.</p>
+      </article>
+      <article class="rounded-3xl border border-black/10 bg-white p-6 lg:min-h-72">
+        <div class="mono text-xs uppercase tracking-[0.18em] text-[var(--violet-strong)]">02 / review</div>
+        <h3 class="mt-8 text-2xl font-black tracking-normal">Preview every cleanup.</h3>
+        <p class="mt-4 leading-7 text-black/58">A Lazygit-style split-panel TUI makes findings and diffs scannable.</p>
+      </article>
+      <article class="rounded-3xl border border-black/10 bg-white p-6 lg:min-h-72">
+        <div class="mono text-xs uppercase tracking-[0.18em] text-[var(--violet-strong)]">03 / protect</div>
+        <h3 class="mt-8 text-2xl font-black tracking-normal">Warn, block, or auto-clean.</h3>
+        <p class="mt-4 leading-7 text-black/58">Install hooks locally and enforce the same policy in GitHub Actions.</p>
+      </article>
+    </div>
+  </div>
+</section>

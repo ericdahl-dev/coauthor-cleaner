@@ -1,0 +1,34 @@
+<section id="install" class="paper-section px-4 py-24 sm:px-6 lg:px-8">
+  <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+    <div>
+      <p class="mono text-xs font-bold uppercase tracking-[0.18em] text-[var(--violet-strong)]">Install</p>
+      <h2 class="mt-4 max-w-xl text-4xl font-black leading-[0.98] tracking-normal sm:text-5xl">
+        Local cleanup without leaving the terminal.
+      </h2>
+      <p class="mt-5 max-w-xl text-lg leading-8 text-black/62">
+        Use the interactive TUI when you want to review every change, or run non-interactive cleanup from scripts and automation.
+      </p>
+    </div>
+    <div class="min-w-0 space-y-4">
+      <div class="min-w-0 overflow-hidden rounded-3xl border border-black/10 bg-[#11131a] text-white shadow-2xl shadow-black/20">
+        <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
+          <span class="mono text-xs uppercase tracking-[0.16em] text-white/40">go install</span>
+          <span class="rounded-full bg-[var(--acid)] px-3 py-1 text-xs font-bold text-black">latest</span>
+        </div>
+        <pre class="mono max-w-full overflow-x-auto p-5 text-sm leading-7"><code>go install github.com/ericdahl-dev/coauthor-cleaner/cmd/coauthor-cleaner@latest
+
+coauthor-cleaner</code></pre>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-3xl border border-black/10 bg-white p-6">
+          <div class="mono text-sm font-bold text-[var(--violet-strong)]">fix --push</div>
+          <p class="mt-3 text-sm leading-6 text-black/62">Run a scripted cleanup and publish the branch after checks pass.</p>
+        </div>
+        <div class="rounded-3xl border border-black/10 bg-white p-6">
+          <div class="mono text-sm font-bold text-[var(--violet-strong)]">doctor</div>
+          <p class="mt-3 text-sm leading-6 text-black/62">Verify hooks, config, GitHub CLI, and repository state.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

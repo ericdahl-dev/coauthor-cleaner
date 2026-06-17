@@ -79,8 +79,17 @@ func New(g git.Runner, opts scan.Options, findings []detect.Finding) Model {
 
 	delegate := list.NewDefaultDelegate()
 	delegate.ShowDescription = true
-	delegate.Styles.SelectedTitle = delegate.Styles.SelectedTitle.Foreground(colorAccent).Bold(true)
-	delegate.Styles.SelectedDesc = delegate.Styles.SelectedDesc.Foreground(colorAccent)
+	delegate.Styles.NormalTitle = delegate.Styles.NormalTitle.Foreground(colorText).Bold(true)
+	delegate.Styles.NormalDesc = delegate.Styles.NormalDesc.Foreground(colorMuted)
+	delegate.Styles.SelectedTitle = delegate.Styles.SelectedTitle.
+		Foreground(colorText).
+		Background(lipgloss.Color("#271821")).
+		BorderLeftForeground(colorError).
+		Bold(true)
+	delegate.Styles.SelectedDesc = delegate.Styles.SelectedDesc.
+		Foreground(colorText).
+		Background(lipgloss.Color("#271821")).
+		BorderLeftForeground(colorError)
 
 	l := list.New(items, delegate, 0, 0)
 	l.Title = ""
@@ -108,10 +117,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		m.layout = computeLayout(msg.Width, msg.Height)
-		m.list.SetWidth(m.layout.leftWidth - 4)
-		m.list.SetHeight(m.layout.innerH)
-		m.preview.Width = m.layout.rightWidth - 4
-		m.preview.Height = m.layout.innerH
+		m.list.SetWidth(m.layout.listWidth)
+		m.list.SetHeight(maxInt(3, m.layout.panelHeight-3))
+		m.preview.Width = maxInt(20, m.layout.rightWidth-8)
+		m.preview.Height = maxInt(3, m.layout.panelHeight-3)
 		return m, nil
 
 	case pushDoneMsg:
@@ -283,7 +292,6 @@ func (m *Model) syncPreview() {
 	}
 	f := m.findings[idx]
 	var b strings.Builder
-	b.WriteString(panelTitlePassive.Render("Preview") + "\n\n")
 	b.WriteString(PreviewDiff(f))
 	if f.Selected {
 		b.WriteString("\n" + okStyle.Render("● selected for cleanup"))
@@ -341,7 +349,6 @@ func (m Model) renderMain() string {
 func (m Model) renderStatusBar() string {
 	st := m.repoState
 	parts := []string{
-		titleStyle.Render("Coauthor Cleaner"),
 		fmt.Sprintf("branch %s", st.Branch),
 	}
 	if st.UpstreamExists {
@@ -359,7 +366,15 @@ func (m Model) renderStatusBar() string {
 	} else {
 		parts = append(parts, fmt.Sprintf("%d findings · %d selected", count, sel))
 	}
-	return statusBarStyle.Width(m.layout.width - 2).Render(strings.Join(parts, "  │  "))
+	brand := lipgloss.JoinHorizontal(
+		lipgloss.Center,
+		logoMarkStyle.Render("▣"),
+		" ",
+		titleStyle.Render("Coauthor Cleaner"),
+	)
+	status := subStyle.Render(strings.Join(parts, "  │  "))
+	line := lipgloss.JoinHorizontal(lipgloss.Center, brand, "  ", badgeStyle.Render("git history hygiene"), "  ", status)
+	return statusBarStyle.Width(maxInt(20, m.layout.width-4)).Render(line)
 }
 
 func (m Model) renderSplit() string {
@@ -368,7 +383,12 @@ func (m Model) renderSplit() string {
 		ly = computeLayout(80, 24)
 	}
 
-	leftTitle := panelTitleActive.Render("Findings")
+	leftTitle := lipgloss.JoinHorizontal(
+		lipgloss.Center,
+		panelTitleActive.Render("FINDINGS"),
+		" ",
+		subStyle.Render(fmt.Sprintf("%d total", len(m.findings))),
+	)
 
 	leftBody := m.list.View()
 	if len(m.findings) == 0 {
@@ -376,16 +396,24 @@ func (m Model) renderSplit() string {
 	}
 
 	left := panelActiveStyle.
-		Width(ly.leftWidth).
-		Height(ly.bodyHeight).
-		Render(leftTitle + "\n" + leftBody)
+		Width(maxInt(20, ly.leftWidth-6)).
+		Height(ly.panelHeight).
+		Render(leftTitle + "\n\n" + leftBody)
 
+	rightTitle := panelTitlePassive.Render("LIVE PREVIEW")
 	right := panelPassiveStyle.
-		Width(ly.rightWidth).
-		Height(ly.bodyHeight).
-		Render(m.preview.View())
+		Width(maxInt(20, ly.rightWidth-6)).
+		Height(ly.panelHeight).
+		Render(rightTitle + "\n\n" + m.preview.View())
 
 	return lipgloss.JoinHorizontal(lipgloss.Top, left, " ", right)
+}
+
+func maxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 
 func (m Model) renderFooter() string {

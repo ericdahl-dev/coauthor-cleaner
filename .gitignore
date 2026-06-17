@@ -1,2 +1,5 @@
 /coauthor-cleaner
 /dist/
+site/.astro/
+site/dist/
+site/node_modules/
