@@ -26,10 +26,25 @@ Lazygit-style split-panel TUI: findings list (left), live preview (right), statu
 
 Non-interactive: `coauthor-cleaner fix --push`
 
+## Protection Setup
+
+Prevent AI attribution markers from being committed in the first place:
+
+**Locally (git hooks):**
 ```bash
-coauthor-cleaner config init
+cp .coauthor-cleaner.protect.yml .coauthor-cleaner.yml
 coauthor-cleaner hook install
-# set behavior.hook_mode: clean  → auto-fix on git commit
+# Commits with AI markers will now be blocked
+```
+
+**In CI (GitHub Actions):**
+The workflow `.github/workflows/protect.yml` automatically blocks PRs with AI markers. No setup needed—it runs on every PR.
+
+Or add to your workflow:
+```yaml
+- uses: ericdahl-dev/coauthor-cleaner/action.yml@v0.1.3
+  with:
+    mode: block   # Fail if any AI markers found
 ```
 
 ## Commands
@@ -50,7 +65,12 @@ coauthor-cleaner hook install
 
 ## Configuration
 
-`.coauthor-cleaner.yml` in your repo root:
+`.coauthor-cleaner.yml` in your repo root. See `.coauthor-cleaner.yml.example` or `.coauthor-cleaner.protect.yml` (strict mode).
+
+**Hook modes:**
+- `warn` — Alert on findings; commit allowed (default)
+- `block` — Fail commit if markers found; user must clean first
+- `clean` — Auto-remove markers; commit proceeds
 
 ```yaml
 providers:
@@ -58,7 +78,7 @@ providers:
   chatgpt: true
 
 behavior:
-  hook_mode: warn   # warn | block | clean
+  hook_mode: block   # warn | block | clean
 
 allowed_trailers:
   - "Co-authored-by: Your Name"
