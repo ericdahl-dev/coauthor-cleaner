@@ -1,0 +1,34 @@
+# Protective configuration: blocks commits and PRs with AI attribution markers
+# Use this for strict protection across your team.
+#
+# To use:
+# 1. Copy to .coauthor-cleaner.yml
+# 2. Run: coauthor-cleaner hook install
+#
+# This configuration:
+# - Blocks commits with AI markers locally (pre-commit hook)
+# - Blocks PRs with AI markers in CI (GitHub Actions)
+# - Allows human co-authors (e.g., pair programming)
+
+providers:
+  claude: true
+  chatgpt: true
+  copilot: true
+  cursor: true
+  generic_ai: true
+
+targets:
+  staged_diff: true
+  commit_messages: true
+  pr_body: true
+  file_headers: true
+
+behavior:
+  hook_mode: block           # block | warn | clean
+  preserve_human_coauthors: true
+
+allowed_trailers:
+  - "Signed-off-by:"
+  - "Reviewed-by:"
+  # Add human co-authors here, e.g.:
+  # - "Co-authored-by: Alice Smith"
