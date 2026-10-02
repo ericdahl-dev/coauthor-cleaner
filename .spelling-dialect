@@ -1,0 +1,8 @@
+# Org American-spelling check (ericdahl-dev/spelling-dialect).
+#
+# Paths to skip: vendored code this repo doesn't own.
+# .claude/skills/ is a copy of the gstack skill pack and shared Claude Code
+# skills, synced from upstream. Rewriting their spelling here would diverge
+# from upstream on every sync, and one file is a captured model-response
+# fixture (security-bench-haiku-responses.json).
+path: .claude/skills/
